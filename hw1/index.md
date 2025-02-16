@@ -73,7 +73,7 @@ Nearest pixel sampling method is getting the nearest texel corresponeidng to the
 
 | Nearest; Sample Rate = 1 | Nearest; Sample Rate = 16 | Bilinear; Sample Rate = 1 | Bilinear; Sample Rate = 16 |
 | :----: | :----: | :----: | :----: |
-| <img src="media/part_5_bilinear_1_new.png" width="400px"/> | <img src="media/part5_nearest_16_new.png" width="400px"/> | <img src="media/part5_bilinear_1_new.png" width="400px"/> | <img src="media/part5_bilinear_16_new.png" width="400px"/>
+| <img src="media/part_5_bilinear_1_new.png" width="400px"/> | <img src="media/part_5_nearest_16_new.png" width="400px"/> | <img src="media/part_5_bilinear_1_new.png" width="400px"/> | <img src="media/part_5_bilinear_16_new.png" width="400px"/>
 
 ## TODO: Comment on the relative differences
 
