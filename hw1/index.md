@@ -78,11 +78,11 @@ Nearest pixel sampling method is getting the nearest texel corresponeidng to the
 
 | Nearest; Sample Rate = 1 | Nearest; Sample Rate = 16 |
 | :----: | :----: |
-| <img src="media/nearest_1.png" width="400px"/> | <img src="media/nearest_16.png" width="400px"/> |
+| <img src="media/nearest_1.png" width="500px"/> | <img src="media/nearest_16.png" width="500px"/> |
 
 | Bilinear; Sample Rate = 1 | Bilinear; Sample Rate = 16 |
 | :----: | :----: |
-| <img src="media/bilinear_1.png" width="400px"/> | <img src="media/bilinear_16.png" width="400px"/> |
+| <img src="media/bilinear_1.png" width="500px"/> | <img src="media/bilinear_16.png" width="500px"/> |
 
 Nearest pixel sampling results in rougher edges and a harsher color contrast in the image. Bilinear pixel sampling and supersampling results in a blended image. This shows clearly in the edge of the seal, where the supersampled and bilinear sampled circles are more round while nearest pixel sampling with no supersampling has jaggies. You can see the letters "RK" more clearly in all the antialiased images. The difference is clear when looking from far away or squinting at the image. 
 
@@ -107,10 +107,10 @@ For lsm = 0, there is only 1 mipmap level that needs to be generated: level 0, w
 
 | lsm = Zero; psm = Nearest | lsm = Zero; psm = Linear |
 | :----: | :----: | 
-| <img src="media/zero_nearest.png" width="400px"/> | <img src="media/zero_linear.png" width="400px"/> |
+| <img src="media/zero_nearest.png" width="500px"/> | <img src="media/zero_linear.png" width="500px"/> |
 
 | lsm = Nearest; psm = Nearest | lsm = Nearest; psm = Linear |
 |:----: | :----: |
-| <img src="media/nearest_nearest.png" width="400px"/> | <img src="media/nearest_linear.png" width="400px"/>|
+| <img src="media/nearest_nearest.png" width="500px"/> | <img src="media/nearest_linear.png" width="500px"/>|
 
 An easy way to examine the different sampling effects is to look at the sky. When only mipmap level 0 is used, the sky is patchy. Using nearest level sampling yields a smoother sky. Between lsm = nearest+ psm = nearest and lsm = nearest + psm = linear, the latter looks better. 
