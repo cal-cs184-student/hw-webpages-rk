@@ -64,6 +64,17 @@ TODO: MAY NEED TO RETAKE IMAGE WITH THE TOP INFO
 
 
 ## Task 5: "Pixel sampling" for texture mapping
+Pixel sampling is used to get pixels for a given screen space coordinate given a texture image (texels). I implemented texture mapping by repeating the same process for each coordinate within the triange:
+- based on the sample_rate, loop x amount of times
+- get barycentric coordinates for uv
+- get color by sampling texel (either nearest or bilinear) of Vector uv
+- fill pixel 
+Nearest pixel sampling method is getting the nearest texel corresponeidng to the pixel. In bilinear pixel sampling, we sample multiple texels close to the corresponding pixel and calculate the correpsonding color based on the "closeness" to the texels we sampled. 
 
+| Nearest; Sample Rate = 1 | Nearest; Sample Rate = 16 | Bilinear; Sample Rate = 1 | Bilinear; Sample Rate = 16 |
+| :----: | :----: | :----: | :----: |
+| <img src="media/part5-nearest_1_new.png" width="400px"/> | <img src="media/part5-nearest_16_new.png" width="400px"/> | <img src="media/part5-bilinear_1_new.png" width="400px"/> | <img src="media/part5-bilinear_16_new.png" width="400px"/>
+
+## TODO: Comment on the relative differences
 
 ## Task 6: "Level Sampling" with mipmaps for texture mapping
