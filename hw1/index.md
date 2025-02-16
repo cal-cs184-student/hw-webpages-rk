@@ -7,7 +7,7 @@ Link to GitHub repository: <a href="https://github.com/cal-cs184-student/sp25-hw
 
 ## Overview
 In this project, we implemented a rasterizer for the svg files, which can be found throughout the internet. We learned how to rotate, scale, and transform these svg images. We also learned about barycentric coordinates and how to use them in context of texture mapping and pixel interpolation. It was interested to see all of the different images we were able to rasterize through triangulation!
-
+We have attempted to provide information about the sampling specifications, since many of our screenshots do not include the information at the top.
 
 ## Task 1: Drawing Single-Color Triangles
 
@@ -50,7 +50,7 @@ Here is our updated robot, who is in the middle of doing a cartwheel!
 
 ## Task 4: Barycentric coordinates
 
-Barycentric coordinates refer to a new coordinate system altogether. They allow us to interpolate values more easily, like the points of traingles. We take the original xy coordinates and produce linear combinations to get a new coordinate. The sum of the coefficients of the combination must be 1 to make sure that the points still lie inside the shape. We're able to have smoother transitions within the triangle's colors or textures due to antialiasing, and we also can sample points more easily. As we approach one vertex of the triangle, it will contribute to the linear combination more that the vertices that are further away. 
+Barycentric coordinates refer to a new coordinate system altogether. They allow us to interpolate values more easily, like the points of traingles. We take the original xy coordinates and produce linear combinations to get a new coordinate. The sum of the coefficients of the combination must be 1 to make sure that the points still lie inside the shape. We're able to have smoother transitions within the triangle's colors or textures due to antialiasing, and we also can sample points more easily. As we approach one vertex of the triangle, it will contribute to the linear combination more that the vertices that are further away. We can see this with the triangle below, where each of the vertices were assigned to be red, green, or blue. At the vertex, the assigned color has the most impact. In the middle of the triangle, where all vertices are equally as far away, each vertex's color has an equal contribution to the resulting pixel's color.
 
 <td style="text-align: center;">
     <img src="media/part_4_triangle.png" width="400px" style="display: block; margin: 0 auto;"/>
@@ -59,8 +59,6 @@ Barycentric coordinates refer to a new coordinate system altogether. They allow 
 
 Here is the color wheel we visualized from test7, with a sampling rate of 1 and default parameters.
 
-TODO: MAY NEED TO RETAKE IMAGE WITH THE TOP INFO
-
 <td style="text-align: center;">
     <img src="media/part4-color-wheel.png" width="400px" style="display: block; margin: 0 auto;"/>
     <figcaption>part4 test7</figcaption>
@@ -68,13 +66,13 @@ TODO: MAY NEED TO RETAKE IMAGE WITH THE TOP INFO
 
 
 ## Task 5: "Pixel sampling" for texture mapping
-Pixel sampling is used to get pixels for a given screen space coordinate given a texture image (texels). I implemented texture mapping by repeating the same process for each coordinate within the triangle:
+Pixel sampling is used to get pixels for a given screen space coordinate given a texture image (made of texels). We implemented texture mapping by repeating the following process for each coordinate that we determined to be within the triangle:
 - based on the sample_rate, loop `sqrt(sample_rate)` amount of times
-- compute barycentric coordinates for uv
-- get color by sampling texel (either nearest or bilinear) of Vector uv
-- fill pixel 
+- compute barycentric coordinates for `uv`
+- get color by sampling texel (either nearest or bilinear) of the 2D vector `uv`
+- fill the pixel 
 
-Nearest pixel sampling method is getting the nearest texel corresponeidng to the pixel. In bilinear pixel sampling, we sample multiple texels close to the corresponding pixel and calculate the correpsonding color based on the "closeness" to the texels we sampled. 
+Nearest pixel sampling method is getting the nearest texel that corresponds to the pixel. In bilinear pixel sampling, we sample multiple texels close to the corresponding pixel and calculate the correpsonding color based on the "closeness" to the texels we sampled. 
 
 | Nearest; Sample Rate = 1 | Nearest; Sample Rate = 16 |
 | :----: | :----: |
@@ -84,24 +82,21 @@ Nearest pixel sampling method is getting the nearest texel corresponeidng to the
 | :----: | :----: |
 | <img src="media/bilinear_1.png" width="500px"/> | <img src="media/bilinear_16.png" width="500px"/> |
 
-Nearest pixel sampling results in rougher edges and a harsher color contrast in the image. Bilinear pixel sampling and supersampling results in a blended image. This shows clearly in the edge of the seal, where the supersampled and bilinear sampled circles are more round while nearest pixel sampling with no supersampling has jaggies. You can see the letters "RK" more clearly in all the antialiased images. The difference is clear when looking from far away or squinting at the image. 
+Nearest pixel sampling results in rougher edges and a harsher color contrast in the image. Bilinear pixel sampling and supersampling results in a blended image. This shows clearly in the edge of the seal, where the supersampled, and bilinear sampled circles are more round while nearest pixel sampling with no supersampling has jaggies. You can see the letters "RK" more clearly in all the antialiased images. The difference is clear when looking from far away or squinting at the image. 
+In terms of relative differences, we expect to see a large difference between the two sampling methods when we are scaling an image up from a low resolution. Nearest sampling will give a more pixelated appearance because we just use the closest texel. Bilinear sampling will result in a smoother transition between pixels, since it considers 4 surrounding pixels instead of just 1.
 
-
-
-## TODO: Comment on the relative differences
-
-## Task 6: "Level Sampling" with mipmaps for texture mapping\
+## Task 6: "Level Sampling" with mipmaps for texture mapping
 
 Level sampling is different pixels at different levels. For a real life example, if you have an object closer to you, you would see it in a higher detail. If the object is farther away, it would be blurrier. The same concept applies in graphics, except that we sample pixels from different mipmap levels. 
 
-We implemented level sampling for texture mapping by expanding on the code we wrote from tast 5. However, instead of calculating the barycentric coordinates only for uv, we also caluclated uv_x + 1 and uv_y + 1. Then, we calculated the level by using the equation from lecture. 
+We implemented level sampling for texture mapping by expanding on the code we wrote from tast 5. However, instead of calculating the barycentric coordinates only for uv, we also calcuated uv_x + 1 and uv_y + 1. Then, we calculated the level by using the equation from lecture. 
 
 <td style="text-align: center;">
     <img src="media/equation.png" width="400px" style="display: block; margin: 0 auto;"/>
     <figcaption>equation from lecture to calculate level</figcaption>
 </td>
 
-If lsm 0, we always use mipmap level 0. If lsm = nearest, we got the closest mipmap level. If lsm = linear, we calculated the 2 closest mipmap levels and calculated the weighted sum. 
+If lsm = 0, we always use mipmap level 0. If lsm = nearest, we got the closest mipmap level. If lsm = linear, we calculated the 2 closest mipmap levels and calculated the weighted sum. 
 
 For lsm = 0, there is only 1 mipmap level that needs to be generated: level 0, which would use less memory. Nearest and Linear require additional mipmaps, which would require more memory. Linear runs the slowest because the algorithm gets up to 2 values per pixel for the weighted sum. The antialiasing power is best with linear, and worst with mipmap level always being zero. The more antialising power, the more we need to sacrifice as antialising will use more speed and memory becuase of increased sampling needed to generate the image.
 
@@ -113,4 +108,4 @@ For lsm = 0, there is only 1 mipmap level that needs to be generated: level 0, w
 |:----: | :----: |
 | <img src="media/nearest_nearest.png" width="500px"/> | <img src="media/nearest_linear.png" width="500px"/>|
 
-An easy way to examine the different sampling effects is to look at the sky. When only mipmap level 0 is used, the sky is patchy. Using nearest level sampling yields a smoother sky. Between lsm = nearest+ psm = nearest and lsm = nearest + psm = linear, the latter looks better. 
+An easy way to examine the different sampling effects is to look at the sky. When only mipmap level 0 is used, the sky is patchy. Using nearest level sampling yields a smoother sky. Between `lsm = nearest` with `psm = nearest` and `lsm = nearest` with `psm = linear`, the latter looks better. 
