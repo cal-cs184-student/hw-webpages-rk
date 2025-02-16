@@ -77,4 +77,21 @@ Nearest pixel sampling method is getting the nearest texel corresponeidng to the
 
 ## TODO: Comment on the relative differences
 
-## Task 6: "Level Sampling" with mipmaps for texture mapping
+## Task 6: "Level Sampling" with mipmaps for texture mapping\
+
+Level sampling is different pixels at different levels. For a real life example, if you have an object closer to you, you would see it in a higher detail. If the object is farther away, it would be blurrier. The same concept applies in graphics, except that we sample pixels from different mipmap levels. 
+
+We implemented level sampling for texture mapping by expanding on the code we wrote from tast 5. However, instead of calculating the barycentric coordinates only for uv, we also caluclated uv_x + 1 and uv_y + 1. Then, we calculated the level by using the equation from lecture. 
+
+<td style="text-align: center;">
+    <img src="media/equation.png" width="400px" style="display: block; margin: 0 auto;"/>
+    <figcaption>equation from lecture to calculate level</figcaption>
+</td>
+
+If lsm 0, we always use mipmap level 0. If lsm = nearest, we got the closest mipmap level. If lsm = linear, we calculated the 2 closest mipmap levels and calculated the weighted sum. 
+
+For lsm = 0, there is only 1 mipmap level that needs to be generated: level 0, which would use less memory. Nearest and Linear require additional mipmaps, which would require more memory. Linear runs the slowest because the algorithm gets up to 2 values per pixel for the weighted sum. The antialiasing power is best with linear, and worst with mipmap level always being zero. 
+
+| Zero; Nearest | Zero; Linear | Nearest; Nearest | Nearest; Linear |
+| :----: | :----: | :----: | :----: |
+| <img src="media/l_zero_p_nearest.png" width="400px"/> | <img src="media/l_zero_p_linear.png" width="400px"/> | <img src="media/l_nearest_p_nearest.png" width="400px"/> | <img src="media/l_nearest_p_linear.png" width="400px"/>
