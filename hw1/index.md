@@ -94,4 +94,4 @@ For lsm = 0, there is only 1 mipmap level that needs to be generated: level 0, w
 
 | Zero; Nearest | Zero; Linear | Nearest; Nearest | Nearest; Linear |
 | :----: | :----: | :----: | :----: |
-| <img src="media/l_zero_p_nearest.png" width="400px"/> | <img src="media/l_zero_p_linear.png" width="400px"/> | <img src="media/l_nearest_p_nearest.png" width="400px"/> | <img src="media/l_nearest_p_linear.png" width="400px"/>
+| <img src="media/l_zero_p_nearest_new.png" width="400px"/> | <img src="media/l_zero_p_linear_new.png" width="400px"/> | <img src="media/l_nearest_p_nearest_new.png" width="400px"/> | <img src="media/l_nearest_p_linear_new.png" width="400px"/>
