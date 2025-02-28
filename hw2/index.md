@@ -13,7 +13,7 @@
 # CS184/284A Spring 2025 Homework 2 Write-Up
 ## by Ramya Chitturi and Kerrine Tai
 
-Link to webpage: <a href="https://cal-cs184-student.github.io/hw-webpages-rk/index.html">https://cal-cs184-student.github.io/hw-webpages-rk/hw1/index.html</a>
+Link to webpage: <a href="https://cal-cs184-student.github.io/hw-webpages-rk/index.html">https://cal-cs184-student.github.io/hw-webpages-rk/hw2/index.html</a>
 
 Link to GitHub repository: <a href="https://github.com/cal-cs184-student/sp25-hw2-r-k-2">https://github.com/cal-cs184-student/sp25-hw2-r-k-2</a>
 
