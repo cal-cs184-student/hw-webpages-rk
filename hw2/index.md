@@ -21,13 +21,13 @@ Link to GitHub repository: <a href="https://github.com/cal-cs184-student/sp25-hw
 
 <img src="teapot.png" width="400px" style="display: block; margin: 0 auto;"/>
 
-In this project, we explored several geometric modeling techniques using the half-edge data structure. We used the de Casteljau algorithm to build Bezier curves and surfaces, manipulated triangle meshes represented by the half-edge data structure, and implemented loop subdivision through splitting and flipping edges.
+In this project, we explored several geometric modeling techniques using the half-edge data structure. We used the de Casteljau algorithm to build Bezier curves and surfaces, manipulated triangle meshes represented by the half-edge data structure, and implemented loop subdivision through splitting and flipping edges. Some of the images are bit small, but you can open them up in a new tab to see them more clearly!
 
 ## Section I: Bezier Curves and Surfaces
 
 ### Part 1: Bezier curves with 1D de Casteljau subdivision
 
-The goal was to create Bezier curves in 1D using the de Casteljau algorithm. Using the control points, we used the fraction `t` to linearly interpolate the points. Thus, the `n` input points will become `n-1` output points to produce one level of subdivision in the algorithm. We keep recursively running this algorithm by sampling regular intervals of `t` until we only have 1 point left as our base case. We can find some point $p'_i$ by doing $p'_i = (1-t)p_i + p_{i+1}$.
+The goal was to create Bezier curves in 1D using the de Casteljau algorithm. Using the control points, we used the fraction `t` to linearly interpolate the points. Thus, the `n` input points will become `n-1` output points to produce one level of subdivision in the algorithm. We keep recursively running this algorithm by sampling regular intervals of `t` until we only have 1 point left as our base case. We can find some point $$p'_i$$ by doing $$p'_i = (1-t)p_i + p_{i+1}$$.
 
 We used the following code to create our own Bezier curve with 6 control points and visualize the algorithm.
 ```
@@ -65,9 +65,7 @@ Here is our result of rendering teapot.bez with this step.
 
 ### Part 3: Area-weighted vertex normals
 
-We calculate the area-weighted normals of all of the neighboring triangles to the vertex. We then average this out and normalized the result. We iterated through all of the neighboring triangles using a loop. 
-
-#### TODO: add more detail
+We calculate the area-weighted normals of all of the neighboring triangles to the vertex. We then average this out and normalized the result. We iterated through all of the neighboring triangles using a loop. We did this by first getting the 3 relevant vertices using our half-edge traversal method. We then got the unit vector for the face normal and multiplied this by our calculated area of the triangle. 
 
 | teapot.dae without Phong shading | teapot.dae with Phong shading |
 | :----: | :----: |
@@ -77,7 +75,7 @@ We calculate the area-weighted normals of all of the neighboring triangles to th
 
 We used the following resource from CMU provided in the half-edge primer heavily when implementing edge flip: http://15462.courses.cs.cmu.edu/fall2015content/misc/HalfedgeEdgeOpImplementationGuide.pdf. We particularly used the after flip image to define all of our halfedges, vertices, etc. in all of our calls to `setNeighbor` to ensure everything was correct in relation to each other.
 
-We were first confused about how to implement this part without creating new elements. Using the diagram in resource above helped a lot in visualizing what each of halfedges needed to be reassigned for their next, twin, vertex, edge, and face values. It also helped provide a starting point for the different sections in our code for Parts 4 and 5.
+We were first confused about how to implement this part without creating new elements. Using the diagram in resource above helped a lot in visualizing what each of halfedges needed to be reassigned for their next, twin, vertex, edge, and face values. It also helped provide a starting point for the different sections in our code for Parts 4 and 5, which made debugging a lot easier.
 
 Here is the original teapot image, following by the teapot image after flipping some edges. There are some cases where one triangle is a lot darker than the other after flipping, but these are degenerate cases we don't need to worry about (as per the spec).
 
@@ -94,7 +92,7 @@ Here is our diagram:
 
 Thankfully, we did not have an eventful debugging journey. One trick we found to be very useful was to "redraw" the triangle diagram with all our changes. That way, it was easy to see if a halfedge or edge or anything else was missing. 
 
-| Before changes | After edge splits | After edge splits and edge flips |
+| Before changes | After only edge splits | After edge splits and edge flips |
 | :----: | :----: | :----: |
 | <img src="media/part5/before_changes.png" width="500px"/> | <img src="media/part5/only_split.png" width="500px"/> | <img src="media/part5/split_and_flip.png" width="500px"/> |
 
@@ -104,7 +102,7 @@ Thankfully, we did not have an eventful debugging journey. One trick we found to
 We implemented loop subdivision in 5 main steps. 
 1. We first computed the new positions for all the vertices in the input mesh by iterating through all vertices and looping through all the edges adjacent to the vertex to calculate the degree. We then used the degree to calculate u, and then used this equation to calculate and update the new position of the vertex. We also set all the vertices we iterated through to be new.
 
-$(1 - n * u) * original_position + u * original_neighbor_position_sum$
+$ (1 - n * u) * original\_position + u * original\_neighbor\_position\_sum $
 
 2. We then iterated through all the edges and calculated the new position of the edge using 4 vertex values. We used the equation $3/8 * (A + B) + 1/8 * (C + D)$. We set the edge's new position to this values and set e to new. While iterating through the edges, we also added all the edges we visited to a list `originalEdges`. 
 
@@ -118,11 +116,11 @@ For debugging, we found it very useful to comment out parts of the code and obse
 
 Here is loop subdivision on the torus dae.
 
-<img src="media/part6/torus/Screenshot 2025-02-27 at 7.48.37 PM.png" width="200px"/>
-<img src="media/part6/torus/Screenshot 2025-02-27 at 7.48.42 PM.png" width="200px"/>
-<img src="media/part6/torus/Screenshot 2025-02-27 at 7.48.50 PM.png" width="200px"/>
-<img src="media/part6/torus/Screenshot 2025-02-27 at 7.48.56 PM.png" width="200px"/>
-<img src="media/part6/torus/Screenshot 2025-02-27 at 7.49.00 PM.png" width="200px"/>
+<img src="media/part6/torus/Screenshot 2025-02-27 at 7.48.37 PM.png" width="300px"/>
+<img src="media/part6/torus/Screenshot 2025-02-27 at 7.48.42 PM.png" width="300px"/>
+<img src="media/part6/torus/Screenshot 2025-02-27 at 7.48.50 PM.png" width="300px"/>
+<img src="media/part6/torus/Screenshot 2025-02-27 at 7.48.56 PM.png" width="300px"/>
+<img src="media/part6/torus/Screenshot 2025-02-27 at 7.49.00 PM.png" width="300px"/>
 
 
 Meshes always become increasingly rounded with more loop subdivisions. Sharp corners and edges become lumpy smooth surfaces. Below is an example of a cube losing the corners. 
