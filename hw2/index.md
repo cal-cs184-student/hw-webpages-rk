@@ -86,4 +86,65 @@ Here is the original teapot image, following by the teapot image after flipping 
 
 ### Part 5: Edge split
 
+We implemented edge splitting by first drawing the original triangle diagram without any edge split. Then we drew the new vertex in the middle and added in the new data structures into the diagram. Finally, we reassigned the relevant values in the new and original data structures. When drawing, we wrote psudeocode, and that translated easily to actual code. After completing edge flip, edge splitting was significantly easier as we already understood half edges well, especially the functions to modify the data structures. 
+
+Here is our diagram:
+<img src="media/part5/edge_split_diagram.jpeg" width="500px"/>
+
+Thankfully, we did not have an eventful debugging journey. One trick we found to be very useful was to "redraw" the triangle diagram with all our changes. That way, it was easy to see if a halfedge or edge or anything else was missing. 
+
+Here is the mesh before changes:
+<img src="media/part5/before_changes.png" width="500px"/>
+
+Here is the mesh after edge splits:
+<img src="media/part5/only_split.png" width="500px"/>
+
+Here is a mesh after edge splits and edge flips:
+<img src="media/part5/split_and_flip.png" width="500px"/>
+
+
+
 ### Part 6: Loop subdivision for mesh upsampling
+
+We implemented loop subdivision in 5 main steps. 
+1. We first computed the new positions for all the vertices in the input mesh by iterating through all vertices and looping through all the edges adjacent to the vertex to calculate the degree. We then used the degree to calculate u, and then used this equation to calculate and update the new position of the vertex. We also set all the vertices we iterated through to be new.
+
+$(1 - n * u) * original_position + u * original_neighbor_position_sum$
+
+2. We then iterated through all the edges and calculated the new position of the edge using 4 vertex values. We used the equation $3/8 * (A + B) + 1/8 * (C + D)$. We set the edge's new position to this values and set e to new. While iterating through the edges, we also added all the edges we visited to a list `originalEdges`. 
+
+3. We iterate through `originalEdges` and split all the edges, setting the split vertex to new and setting the new position fo the split vertex to the edge's new position. 
+
+4. Next, we flipped edge that connected a new and old vertex. 
+
+5. Finally, we copied the new vertex positions into final vertex position. 
+
+For debugging, we found it very useful to comment out parts of the code and observe what happens. While commenting out parts of the code, we can also run the code and interact with the GUI to see vertices, edges, and faces. 
+
+Here is loop subdivision on the torus dae.
+
+Meshes always become increasingly rounded with more loop subdivisions. Sharp corners and edges become lumpy smooth surfaces. Below is an example of a cube losing the corners. 
+
+<img src="media/part6/no_sharp.png" width="500px"/>
+
+However, if we pre-split some edges in the areas that we want to be sharp, it retains some of the sharpness. 
+
+<img src="media/part6/sharp_subdivision_1.png" width="500px"/>
+<img src="media/part6/sharp_subdivision_2.png" width="500px"/>
+
+Below is loop subdivision performed on the cube. It is asymmetric because of the original diagonal edge on the cube. There is no matching diagonal connecting the other 2 edges of a face of the cube, so loop subdividing it will make it have a lemon shape. We can preprocess the cube by adding splitting the diagonal cutting through a face of a cube, making the cube loop symmetric when we subdivide it. 
+
+
+| Unprocessed cube | Processed cube |
+| :----: | :----: |
+| <img src="media/part6/cube/unprocessed/Screenshot 2025-02-27 at 7.52.14 PM.png" width="500px"/> | <img src="media/part6/cube/processed/Screenshot 2025-02-27 at 7.54.10 PM.png" width="500px"/> | <img src="media/part6/cube/unprocessed/Screenshot 2025-02-27 at 7.52.22 PM.png" width="500px"/> | <img src="media/part6/cube/processed/Screenshot 2025-02-27 at 7.53.45 PM.png" width="500px"/> | <img src="media/part6/cube/unprocessed/Screenshot 2025-02-27 at 7.52.32 PM.png" width="500px"/> | <img src="media/part6/cube/processed/Screenshot 2025-02-27 at 7.53.55 PM.png" width="500px"/>
+
+<!-- <img src="media/part6/cube/unprocessed/Screenshot 2025-02-27 at 7.52.14 PM.png" width="500px"/>
+<img src="media/part6/cube/unprocessed/Screenshot 2025-02-27 at 7.52.22 PM.png" width="500px"/>
+<img src="media/part6/cube/unprocessed/Screenshot 2025-02-27 at 7.52.32 PM.png" width="500px"/>
+
+
+<img src="media/part6/cube/processed/Screenshot 2025-02-27 at 7.54.10 PM.png" width="500px"/>
+<img src="media/part6/cube/processed/Screenshot 2025-02-27 at 7.53.45 PM.png" width="500px"/>
+<img src="media/part6/cube/processed/Screenshot 2025-02-27 at 7.53.55 PM.png" width="500px"/> -->
+
