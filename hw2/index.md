@@ -89,19 +89,14 @@ Here is the original teapot image, following by the teapot image after flipping 
 We implemented edge splitting by first drawing the original triangle diagram without any edge split. Then we drew the new vertex in the middle and added in the new data structures into the diagram. Finally, we reassigned the relevant values in the new and original data structures. When drawing, we wrote psudeocode, and that translated easily to actual code. After completing edge flip, edge splitting was significantly easier as we already understood half edges well, especially the functions to modify the data structures. 
 
 Here is our diagram:
+
 <img src="media/part5/edge_split_diagram.jpeg" width="500px"/>
 
 Thankfully, we did not have an eventful debugging journey. One trick we found to be very useful was to "redraw" the triangle diagram with all our changes. That way, it was easy to see if a halfedge or edge or anything else was missing. 
 
-Here is the mesh before changes:
-<img src="media/part5/before_changes.png" width="500px"/>
-
-Here is the mesh after edge splits:
-<img src="media/part5/only_split.png" width="500px"/>
-
-Here is a mesh after edge splits and edge flips:
-<img src="media/part5/split_and_flip.png" width="500px"/>
-
+| Before changes | After edge splits | After edge splits and edge flips |
+| :----: | :----: | :----: |
+| <img src="media/part5/before_changes.png" width="500px"/> | <img src="media/part5/only_split.png" width="500px"/> | <img src="media/part5/split_and_flip.png" width="500px"/> |
 
 
 ### Part 6: Loop subdivision for mesh upsampling
@@ -123,28 +118,29 @@ For debugging, we found it very useful to comment out parts of the code and obse
 
 Here is loop subdivision on the torus dae.
 
+<img src="media/part6/torus/Screenshot 2025-02-27 at 7.48.37 PM.png" width="200px"/>
+<img src="media/part6/torus/Screenshot 2025-02-27 at 7.48.42 PM.png" width="200px"/>
+<img src="media/part6/torus/Screenshot 2025-02-27 at 7.48.50 PM.png" width="200px"/>
+<img src="media/part6/torus/Screenshot 2025-02-27 at 7.48.56 PM.png" width="200px"/>
+<img src="media/part6/torus/Screenshot 2025-02-27 at 7.49.00 PM.png" width="200px"/>
+
+
 Meshes always become increasingly rounded with more loop subdivisions. Sharp corners and edges become lumpy smooth surfaces. Below is an example of a cube losing the corners. 
 
 <img src="media/part6/no_sharp.png" width="500px"/>
 
 However, if we pre-split some edges in the areas that we want to be sharp, it retains some of the sharpness. 
 
-<img src="media/part6/sharp_subdivision_1.png" width="500px"/>
-<img src="media/part6/sharp_subdivision_2.png" width="500px"/>
+<img src="media/part6/sharp_subdivision_1.png" width="500px"/> 
+<img src="media/part6/sharp_subdivision_2.png" width="500px"/> 
 
 Below is loop subdivision performed on the cube. It is asymmetric because of the original diagonal edge on the cube. There is no matching diagonal connecting the other 2 edges of a face of the cube, so loop subdividing it will make it have a lemon shape. We can preprocess the cube by adding splitting the diagonal cutting through a face of a cube, making the cube loop symmetric when we subdivide it. 
 
 
 | Unprocessed cube | Processed cube |
 | :----: | :----: |
-| <img src="media/part6/cube/unprocessed/Screenshot 2025-02-27 at 7.52.14 PM.png" width="500px"/> | <img src="media/part6/cube/processed/Screenshot 2025-02-27 at 7.54.10 PM.png" width="500px"/> | <img src="media/part6/cube/unprocessed/Screenshot 2025-02-27 at 7.52.22 PM.png" width="500px"/> | <img src="media/part6/cube/processed/Screenshot 2025-02-27 at 7.53.45 PM.png" width="500px"/> | <img src="media/part6/cube/unprocessed/Screenshot 2025-02-27 at 7.52.32 PM.png" width="500px"/> | <img src="media/part6/cube/processed/Screenshot 2025-02-27 at 7.53.55 PM.png" width="500px"/>
+| <img src="media/part6/cube/unprocessed/Screenshot 2025-02-27 at 7.52.14 PM.png" width="500px"/> | <img src="media/part6/cube/processed/Screenshot 2025-02-27 at 7.54.10 PM.png" width="500px"/> |
+| <img src="media/part6/cube/unprocessed/Screenshot 2025-02-27 at 7.52.22 PM.png" width="500px"/> | <img src="media/part6/cube/processed/Screenshot 2025-02-27 at 7.53.45 PM.png" width="500px"/> |
+| <img src="media/part6/cube/unprocessed/Screenshot 2025-02-27 at 7.52.32 PM.png" width="500px"/> | <img src="media/part6/cube/processed/Screenshot 2025-02-27 at 7.53.55 PM.png" width="500px"/> |
 
-<!-- <img src="media/part6/cube/unprocessed/Screenshot 2025-02-27 at 7.52.14 PM.png" width="500px"/>
-<img src="media/part6/cube/unprocessed/Screenshot 2025-02-27 at 7.52.22 PM.png" width="500px"/>
-<img src="media/part6/cube/unprocessed/Screenshot 2025-02-27 at 7.52.32 PM.png" width="500px"/>
-
-
-<img src="media/part6/cube/processed/Screenshot 2025-02-27 at 7.54.10 PM.png" width="500px"/>
-<img src="media/part6/cube/processed/Screenshot 2025-02-27 at 7.53.45 PM.png" width="500px"/>
-<img src="media/part6/cube/processed/Screenshot 2025-02-27 at 7.53.55 PM.png" width="500px"/> -->
 
