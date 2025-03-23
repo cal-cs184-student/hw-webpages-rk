@@ -62,9 +62,9 @@ Here are some images with both implementations of the direct lighting function.
 
 Scenes with 1, 4, 16, and 64 light rays, in order. 
 
-<img src="media/part3/spheres_importance_s1_l1.png" width="400px"/>
-<img src="media/part3/spheres_importance_s1_l4.png" width="400px"/>
-<img src="media/part3/spheres_importance_s1_l16.png" width="400px"/>
+<img src="media/part3/spheres_importance_s1_l1.png" width="400px"/> </br>
+<img src="media/part3/spheres_importance_s1_l4.png" width="400px"/> </br>
+<img src="media/part3/spheres_importance_s1_l16.png" width="400px"/> </br>
 <img src="media/part3/spheres_importance_s1_l64.png" width="400px"/>
 
 The main difference between uniform hemisphere sampling and lighting sampling reflected in the images is from the graniness of the images. For hemisphere sampling, the renderd images are more grainy and noisy. With hemisphere sampling, although it samples many parts of the image, many samples are useless. However, with importance sampling, the image is a lot more smooth. This is because importance sampling samples actual light sources, which makes the samples more useful to determining the actual lighting of the image. 
@@ -89,7 +89,7 @@ Here are some of the images we were able to generate with global illumination an
 <img src="media/part4/dragon_global_illum.png" width="400px"/>
 <img src="media/part4/CBbunny_spp_1024.png" width="400px"/>
 
-Here, we can see the spheres with only direct illumination, followed by only indirect illumination.
+Here, we can see the spheres with direct illumination on the left and only indirect illumination on the right.
 
 <img src="media/part4/CBspheres_direct_illum.png" width="400px"/>
 <img src="media/part4/CBspheres_indirect_illum.png" width="400px"/>
@@ -107,12 +107,12 @@ Below, we include a side-by-side of the bunny image generated with difference ma
 
 We also implemented Russian Roulette with a termination probability of 0.4. We use 1024 samples per pixel, 4 light rays, and accumulation to generate the images below. They look pretty similar to the right column above, which is good since Russian Roulette causes faster rendering but a similar output.
 
-<img src="media/part4/CBbunny_0_accum_rr.png" width="500px"/>
-<img src="media/part4/CBbunny_1_accum_rr.png" width="500px"/>
-<img src="media/part4/CBbunny_2_accum_rr.png" width="500px"/>
-<img src="media/part4/CBbunny_3_accum_rr.png" width="500px"/>
-<img src="media/part4/CBbunny_4_accum_rr.png" width="500px"/>
-<img src="media/part4/CBbunny_5_accum_rr.png" width="500px"/>
+<img src="media/part4/CBbunny_0_accum_rr.png" width="400px"/> </br>
+<img src="media/part4/CBbunny_1_accum_rr.png" width="400px"/> </br>
+<img src="media/part4/CBbunny_2_accum_rr.png" width="400px"/> </br>
+<img src="media/part4/CBbunny_3_accum_rr.png" width="400px"/> </br>
+<img src="media/part4/CBbunny_4_accum_rr.png" width="400px"/> </br>
+<img src="media/part4/CBbunny_5_accum_rr.png" width="400px"/>
 
 We can also compare how the number of samples per pixel affects the rendered imageds. We use a Russian Roulette termination probability of 0.4 and 4 light rays. In order, we use a sample ray count of 1, 2, 4, 8, 16, 64, and 1024 with the bunny. As we increase the number of sample rays used, we get less black spots/noise in our rendered image, so the image with 1024 samples looks the cleanest. However, it also takes the longest the render.
 
