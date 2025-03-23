@@ -63,8 +63,11 @@ Here are some images with both implementations of the direct lighting function.
 Scenes with 1, 4, 16, and 64 light rays, in order. 
 
 <img src="media/part3/spheres_importance_s1_l1.png" width="400px"/>
+</br>
 <img src="media/part3/spheres_importance_s1_l4.png" width="400px"/>
+</br>
 <img src="media/part3/spheres_importance_s1_l16.png" width="400px"/>
+</br>
 <img src="media/part3/spheres_importance_s1_l64.png" width="400px"/>
 
 The main difference between uniform hemisphere sampling and lighting sampling reflected in the images is from the graniness of the images. For hemisphere sampling, the renderd images are more grainy and noisy. With hemisphere sampling, although it samples many parts of the image, many samples are useless. However, with importance sampling, the image is a lot more smooth. This is because importance sampling samples actual light sources, which makes the samples more useful to determining the actual lighting of the image. 
@@ -108,25 +111,36 @@ Below, we include a side-by-side of the bunny image generated with difference ma
 We also implemented Russian Roulette with a termination probability of 0.4. We use 1024 samples per pixel, 4 light rays, and accumulation to generate the images below. They look pretty similar to the right column above, which is good since Russian Roulette causes faster rendering but a similar output. Here are scenes, in order, with the max depth set as 0, 1, 2, 3, 4, and 100.
 
 <img src="media/part4/CBbunny_0_accum_rr.png" width="400px"/> 
+</br>
 <img src="media/part4/CBbunny_1_accum_rr.png" width="400px"/> 
+</br>
 <img src="media/part4/CBbunny_2_accum_rr.png" width="400px"/> 
+</br>
 <img src="media/part4/CBbunny_3_accum_rr.png" width="400px"/> 
+</br>
 <img src="media/part4/CBbunny_4_accum_rr.png" width="400px"/>
+</br>
 <img src="media/part4/CBbunny_100_accum_rr.png" width="400px"/>
 
 We can also compare how the number of samples per pixel affects the rendered imageds. We use a Russian Roulette termination probability of 0.4 and 4 light rays. In order, we use a sample ray count of 1, 2, 4, 8, 16, 64, and 1024 with the bunny. As we increase the number of sample rays used, we get less black spots/noise in our rendered image, so the image with 1024 samples looks the cleanest. However, it also takes the longest the render.
 
 <img src="media/part4/CBbunny_spp_1.png" width="400px"/>
+</br>
 <img src="media/part4/CBbunny_spp_2.png" width="400px"/>
+</br>
 <img src="media/part4/CBbunny_spp_4.png" width="400px"/>
+</br>
 <img src="media/part4/CBbunny_spp_8.png" width="400px"/>
+</br>
 <img src="media/part4/CBbunny_spp_16.png" width="400px"/>
+</br>
 <img src="media/part4/CBbunny_spp_64.png" width="400px"/>
+</br>
 <img src="media/part4/CBbunny_spp_1024.png" width="400px"/>
 
 ## Part 5: Adaptive Sampling
 
-The goal of adaptive sampling is to reduce noise by increasing the number of samples. However, not all the samples converge in a uniform manner, so we need to measure the level of convergence per pixel. We define a pixel's convergence as $$ I = 1.96 * \sigma / \sqrt{n} $$. This generates a 95% confidence interval that the average pixel illumination is within I of the mean. This allows us to terminate some integrations early since some pixels have a lower variance and have already converged. We can have a fixed sample size and trace rays faster because of this. Alternatively, we can increase the number of samples to decrease noise when rendering while still completing this task in a reasonable amount of time. In our sampling loop, we keep a running sum of the illuminance, a running sum of square illuminance, and the actual number of samples collected thus far. Every `samplesPerBatch`, we check to see if $$ I \le m * \mu $$, where $m$ is the maximum tolerance. If this is the case, then we stop our ray sampling loop. Afterwareds, we update `sampleCountBuffer` with the actual number of samples we collected, and we update our accumulated radiance with this value as well.
+The goal of adaptive sampling is to reduce noise by increasing the number of samples. However, not all the samples converge in a uniform manner, so we need to measure the level of convergence per pixel. We define a pixel's convergence as $$ I = 1.96 * \sigma / \sqrt{n} $$. This generates a 95% confidence interval that the average pixel illumination is within I of the mean. This allows us to terminate some integrations early since some pixels have a lower variance and have already converged. We can have a fixed sample size and trace rays faster because of this. Alternatively, we can increase the number of samples to decrease noise when rendering while still completing this task in a reasonable amount of time. In our sampling loop, we keep a running sum of the illuminance, a running sum of square illuminance, and the actual number of samples collected thus far. Every `samplesPerBatch`, we check to see if $$ I \le m * \mu $$, where $$ m $$ is the maximum tolerance. If this is the case, then we stop our ray sampling loop. Afterwards, we update `sampleCountBuffer` with the actual number of samples we collected, and we update our accumulated radiance with this value as well.
 
 Here is the result of using adaptive sampling on the bunny with a Russian Roulette termination probablity of 40% and 2048 light rays.
 
