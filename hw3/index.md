@@ -31,9 +31,9 @@ The primitive intersection part was where we checked if a ray intersected any ob
 
 Here are some images with normal shading:
 
-<img src="media/part1/banana.png" width="300px"/>
-<img src="media/part1/CBspheres.png" width="300px"/>
-<img src="media/part1/coil.png" width="300px"/>
+<img src="media/part1/banana.png" width="400px"/>
+<img src="media/part1/CBspheres.png" width="400px"/>
+<img src="media/part1/coil.png" width="400px"/>
 
 
 ## Part 2: Bounding Volume Hierarchy
@@ -42,8 +42,8 @@ For our BVH construction algorithm, since it is recursive, we made a base case w
 
 Here are some images that we could only render in reasonable time with BVH acceleration: 
 
-<img src="media/part2/lucy.png" width="300px"/>
-<img src="media/part2/maxplanck.png" width="300px"/>
+<img src="media/part2/lucy.png" width="400px"/>
+<img src="media/part2/maxplanck.png" width="400px"/>
 
 BVH significantly sped up the time it took to render images, and it showed the most in the more complex geometries. For example, it took maxplanck 282.98 seconds to render without BVH, and 1.974s with. It took lucy 588.12s to render without BVH, and 1.915s with. Even for moderately complicated geometries, the differences showed. It took 21.289 seconds to render the cow without BVH, and 0.436 seconds with. Conceptually, if we do not use BVH, rendering is linear to the number of primities, but since we divide the primitives by around half each recursive level in BVH, rendering is logarithmic. 
 
@@ -60,12 +60,12 @@ Here are some images with both implementations of the direct lighting function.
 | <img src="media/part3/CBbunny_hemisphere_64_32.png" width="500px"/> | <img src="media/part3/CBbunny_importance_64_32_1.png" width="500px"/> |
 | <img src="media/part3/sphere_hemi_64_32.png" width="500px"/> | <img src="media/part3/sphere_importance_64_32.png" width="500px"/> |
 
-Scenes with 1, 4, 16, 64 light rays in order. 
+Scenes with 1, 4, 16, and 64 light rays, in order. 
 
-<img src="media/part3/spheres_importance_s1_l1.png" width="500px"/>
-<img src="media/part3/spheres_importance_s1_l4.png" width="500px"/>
-<img src="media/part3/spheres_importance_s1_l16.png" width="500px"/>
-<img src="media/part3/spheres_importance_s1_l64.png" width="500px"/>
+<img src="media/part3/spheres_importance_s1_l1.png" width="400px"/>
+<img src="media/part3/spheres_importance_s1_l4.png" width="400px"/>
+<img src="media/part3/spheres_importance_s1_l16.png" width="400px"/>
+<img src="media/part3/spheres_importance_s1_l64.png" width="400px"/>
 
 The main difference between uniform hemisphere sampling and lighting sampling reflected in the images is from the graniness of the images. For hemisphere sampling, the renderd images are more grainy and noisy. With hemisphere sampling, although it samples many parts of the image, many samples are useless. However, with importance sampling, the image is a lot more smooth. This is because importance sampling samples actual light sources, which makes the samples more useful to determining the actual lighting of the image. 
 
@@ -85,14 +85,14 @@ Global illumination also refers to indirect lighting. This is when the light ref
 
 Here are some of the images we were able to generate with global illumination and 1024 pixels per sample!
 
-<img src="media/part4/CBspheres_global_illum.png" width="500px"/>
-<img src="media/part4/dragon_global_illum.png" width="500px"/>
-<img src="media/part4/CBbunny_spp_1024.png" width="500px"/>
+<img src="media/part4/CBspheres_global_illum.png" width="400px"/>
+<img src="media/part4/dragon_global_illum.png" width="400px"/>
+<img src="media/part4/CBbunny_spp_1024.png" width="400px"/>
 
 Here, we can see the spheres with only direct illumination, followed by only indirect illumination.
 
-<img src="media/part4/CBspheres_direct_illum.png" width="500px"/>
-<img src="media/part4/CBspheres_indirect_illum.png" width="500px"/>
+<img src="media/part4/CBspheres_direct_illum.png" width="400px"/>
+<img src="media/part4/CBspheres_indirect_illum.png" width="400px"/>
 
 Below, we include a side-by-side of the bunny image generated with difference max depths with and without accumulation. The `m` values per row in order are 0, 1, 2, 3, 4, and 5. All the samples use 1024 samples per pixel and 4 light rays. We can see that when `isAccumBounces` is false (column on the left), increasing the max ray depth causes the image to become darker for each extra bounce of light. This occurs since each bounce of light has a smaller effect on the indirect lighting. On the flip side, the brightness increases for each extra bounce when `isAccumBounces` is true, since we add more light each time, though the increase in brightness becomes smaller at each step. We can see the the most noticeable difference in both columns is between one and two bounces of light. The difference between second and third bounces is not as noticeable. The accumulated light is not much brighter, and correspondingly the non-accumulated bounce is not that much darker.
 
@@ -116,26 +116,27 @@ We also implemented Russian Roulette with a termination probability of 0.4. We u
 
 We can also compare how the number of samples per pixel affects the rendered imageds. We use a Russian Roulette termination probability of 0.4 and 4 light rays. In order, we use a sample ray count of 1, 2, 4, 8, 16, 64, and 1024 with the bunny. As we increase the number of sample rays used, we get less black spots/noise in our rendered image, so the image with 1024 samples looks the cleanest. However, it also takes the longest the render.
 
-<img src="media/part4/CBbunny_spp_1.png" width="500px"/>
-<img src="media/part4/CBbunny_spp_2.png" width="500px"/>
-<img src="media/part4/CBbunny_spp_4.png" width="500px"/>
-<img src="media/part4/CBbunny_spp_8.png" width="500px"/>
-<img src="media/part4/CBbunny_spp_16.png" width="500px"/>
-<img src="media/part4/CBbunny_spp_64.png" width="500px"/>
-<img src="media/part4/CBbunny_spp_1024.png" width="500px"/>
+<img src="media/part4/CBbunny_spp_1.png" width="400px"/>
+<img src="media/part4/CBbunny_spp_2.png" width="400px"/>
+<img src="media/part4/CBbunny_spp_4.png" width="400px"/>
+<img src="media/part4/CBbunny_spp_8.png" width="400px"/>
+<img src="media/part4/CBbunny_spp_16.png" width="400px"/>
+<img src="media/part4/CBbunny_spp_64.png" width="400px"/>
+<img src="media/part4/CBbunny_spp_1024.png" width="400px"/>
 
 ## Part 5: Adaptive Sampling
 
-The goal of adaptive sampling is to reduce noise by increasing the number of samples. However, not all the samples converge in a uniform manner, so we need to measure the level of convergence per pixel. We define a pixel's convergence as $ I = 1.96 * \sigma / \sqrt{n} $. This generates a 95% confidence interval that the average pixel illumination is within I of the mean. This allows us to terminate some integrations early since some pixels have a lower variance and have already converged. We can have a fixed sample size and trace rays faster because of this. Alternatively, we can increase the number of samples to decrease noise when rendering while still completing this task in a reasonable amount of time. In our sampling loop, we keep a running sum of the illuminance, a running sum of square illuminance, and the actual number of samples collected thus far. Every `samplesPerBatch`, we check to see if $ I \le m * \mu $, where $m$ is the maximum tolerance. If this is the case, then we stop our ray sampling loop. Afterwareds, we update `sampleCountBuffer` with the actual number of samples we collected, and we update our accumulated radiance with this value as well.
+The goal of adaptive sampling is to reduce noise by increasing the number of samples. However, not all the samples converge in a uniform manner, so we need to measure the level of convergence per pixel. We define a pixel's convergence as $$ I = 1.96 * \sigma / \sqrt{n} $$. This generates a 95% confidence interval that the average pixel illumination is within I of the mean. This allows us to terminate some integrations early since some pixels have a lower variance and have already converged. We can have a fixed sample size and trace rays faster because of this. Alternatively, we can increase the number of samples to decrease noise when rendering while still completing this task in a reasonable amount of time. In our sampling loop, we keep a running sum of the illuminance, a running sum of square illuminance, and the actual number of samples collected thus far. Every `samplesPerBatch`, we check to see if $$ I \le m * \mu $$, where $m$ is the maximum tolerance. If this is the case, then we stop our ray sampling loop. Afterwareds, we update `sampleCountBuffer` with the actual number of samples we collected, and we update our accumulated radiance with this value as well.
 
 Here is the result of using adaptive sampling on the bunny with a Russian Roulette termination probablity of 40%.
 
-<img src="media/part5/bunny_as.png"/>
-<img src="media/part5/bunny_as_rate.png"/>
+| Adaptive sampling | Rate |
+| :----: | :----: |
+| <img src="media/part5/bunny_as.png"/> | <img src="media/part5/bunny_as_rate.png"/> |
 
 However, we noticed better results when using a lower termination probability. Below are the results of using adaptive sampling with a Russian Roulette termination probablity of 5%.
 
-<img src="media/part5/bunny_as_rr95.png"/>
-<img src="media/part5/bunny_as_rr95_rate.png"/>
-<img src="media/part5/dragon_as_rr95.png"/>
-<img src="media/part5/dragon_as_rr95_rate.png"/>
+| Adaptive sampling | Rate |
+| :----: | :----: |
+| <img src="media/part5/bunny_as_rr95.png"/> | <img src="media/part5/bunny_as_rr95_rate.png"/> |
+| <img src="media/part5/dragon_as_rr95.png"/> | <img src="media/part5/dragon_as_rr95_rate.png"/> |
