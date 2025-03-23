@@ -21,7 +21,7 @@ Link to GitHub repository: <a href="https://github.com/cal-cs184-student/sp25-hw
 
 ## Overview
 
-In this homework, we explored rendering through ray tracing, bounding boxes, and illuminating scenes through different techniques. We first had to wrap our heads around converting from world space to camera space and vice versa to successfully implement ray object intersection, then accelerated the process through bounding boxes. Next, we learned how to render images with illumination, and finally accelerated that process through adaptive sampling. For each part, visualizing in our head was crutial, so we often referred back to lecture slides and recordings. We encountered many problems, mostly related so objects showing up but being completely black. We solved it by debugging the intersection and illumination functions. Some of the images are bit small, but you can open them up in a new tab to see them more clearly!
+In this homework, we explored rendering through ray tracing, bounding boxes, and illuminating scenes through different techniques. We first had to wrap our heads around converting from world space to camera space and vice versa to successfully implement ray object intersection, then accelerated the process through bounding boxes. Next, we learned how to render images with illumination, and finally accelerated that process through adaptive sampling. For each part, visualizing in our head was crucial, so we often referred back to lecture slides and recordings. We encountered many problems, mostly related so objects showing up but being completely black. We solved it by debugging the intersection and illumination functions. Some of the images are bit small, but you can open them up in a new tab to see them more clearly!
 
 ## Part 1: Ray Generation and Scene Intersection
 
@@ -38,7 +38,7 @@ Here are some images with normal shading:
 
 ## Part 2: Bounding Volume Hierarchy
 
-For our BVH construction algorithm, since it is recursive, we made a base case where we stop when the number of primitives in the current range is less than or equal to the `max_leaf_size`. This is where we create the leaf node that stores the primitives. Otherwise, we compute the bounding box. WE then loop through the primitives to create 2 `BBox`, one for the ray intersections and one for the centroids. The splitting axis was choosen with a helper function we wrote `largestDimension`. For our heuristic, we decided to use the average centroid position along the axis that we chose. We thought it was intiutive to just use the average when splitting things in two. Once we split the primitives, we recursivly called the function on the left and right subtree. 
+For our BVH construction algorithm, since it is recursive, we made a base case where we stop when the number of primitives in the current range is less than or equal to the `max_leaf_size`. This is where we create the leaf node that stores the primitives. Otherwise, we compute the bounding box. We then loop through the primitives to create 2 `BBox`, one for the ray intersections and one for the centroids. The splitting axis was chosen with a helper function we wrote called `largestDimension`. For our heuristic, we decided to use the average centroid position along the axis that we chose. We thought it was intiutive to just use the average when splitting things in two. Once we split the primitives, we recursivly called the function on the left and right subtree. 
 
 Here are some images that we could only render in reasonable time with BVH acceleration: 
 
@@ -49,7 +49,7 @@ BVH significantly sped up the time it took to render images, and it showed the m
 
 ## Part 3: Direct Illumination
 
-For the hemiphere sampling, we sample at num_sample points uniformly over the hemisphere. For each sample, we use `hemisphereSampler` to get a random sampled direction, then use it to create a shadow ray and see if the ray intersects something with `bbh->intersect()`. If it does hit an object, we are able to get the emission with the BSDF. We then use the values we collected per sample to solve for the reflection equation given in lecture. Finally, we averae all the rays we sampled to get the illumination. 
+For the hemiphere sampling, we sample at num_sample points uniformly over the hemisphere. For each sample, we use `hemisphereSampler` to get a random sampled direction, then use it to create a shadow ray and see if the ray intersects something with `bbh->intersect()`. If it does hit an object, we are able to get the emission with the BSDF. We then use the values we collected per sample to solve for the reflection equation given in lecture. Finally, we average all the rays we sampled to get the illumination. 
 
 Direct lighting by importance sampling lights was a little more difficult because this was not an uniform sampling. We looped through every light scource in the scene. If the light source is a delta light, we saved time by sampling it only once because all samples from a point light will be the same. Otherwise, we sample the light num_samples times. Each time, this was similar to the process in hemisphere sampling where we get the create the shadow ray, see if it intersects, and solve for the reflection equation. We then average over all the samples for the specific light, then add together the radiance for all the lights in the scene. 
 
@@ -75,7 +75,7 @@ Global illumination also refers to indirect lighting. This is when the light ref
 
 - Base Cases
   - If the ray has a depth of 0, we returned the zero-bounce radiance.
-  - If the ray has a depth of 1, we returned its one-bounce radiance
+  - If the ray has a depth of 1, we returned its one-bounce radiance.
   - Using `coin_flip`, we returned `L_out` with a 40% chance, thus breaking the recursive cycle. `L_out` was equal to one-bounce radiance if `isAccumBounces` was true and 0 otherwise.
 - Then, we used `sample_f` to sample `wi` and the PDF from `isect`. We converted `wi` to world coordinates and generated a ray in that direction with a depth 1 less than the ray that was an input to the function. As before, we used an offset of `EPS_F` for the origin and direction values.
   - If the generated ray doesn't intersect the BVH, then we stop recursing.
@@ -89,7 +89,7 @@ Here are some of the images we were able to generate with global illumination an
 <img src="media/part4/dragon_global_illum.png" width="400px"/>
 <img src="media/part4/CBbunny_spp_1024.png" width="400px"/>
 
-Here, we can see the spheres with direct illumination on the left and only indirect illumination on the right.
+Here, we can see the spheres with only direct illumination on the left and only indirect illumination on the right.
 
 <img src="media/part4/CBspheres_direct_illum.png" width="400px"/>
 <img src="media/part4/CBspheres_indirect_illum.png" width="400px"/>
@@ -105,14 +105,14 @@ Below, we include a side-by-side of the bunny image generated with difference ma
 | <img src="media/part4/CBbunny_4_non_accum.png"/> | <img src="media/part4/CBbunny_4_accum.png"/> |
 | <img src="media/part4/CBbunny_5_non_accum.png"/> | <img src="media/part4/CBbunny_5_accum.png"/> |
 
-We also implemented Russian Roulette with a termination probability of 0.4. We use 1024 samples per pixel, 4 light rays, and accumulation to generate the images below. They look pretty similar to the right column above, which is good since Russian Roulette causes faster rendering but a similar output.
+We also implemented Russian Roulette with a termination probability of 0.4. We use 1024 samples per pixel, 4 light rays, and accumulation to generate the images below. They look pretty similar to the right column above, which is good since Russian Roulette causes faster rendering but a similar output. Here are scenes, in order, with the max depth set as 0, 1, 2, 3, 4, and 100.
 
 <img src="media/part4/CBbunny_0_accum_rr.png" width="400px"/> 
 <img src="media/part4/CBbunny_1_accum_rr.png" width="400px"/> 
 <img src="media/part4/CBbunny_2_accum_rr.png" width="400px"/> 
 <img src="media/part4/CBbunny_3_accum_rr.png" width="400px"/> 
-<img src="media/part4/CBbunny_4_accum_rr.png" width="400px"/> 
-<img src="media/part4/CBbunny_5_accum_rr.png" width="400px"/>
+<img src="media/part4/CBbunny_4_accum_rr.png" width="400px"/>
+<img src="media/part4/CBbunny_100_accum_rr.png" width="400px"/>
 
 We can also compare how the number of samples per pixel affects the rendered imageds. We use a Russian Roulette termination probability of 0.4 and 4 light rays. In order, we use a sample ray count of 1, 2, 4, 8, 16, 64, and 1024 with the bunny. As we increase the number of sample rays used, we get less black spots/noise in our rendered image, so the image with 1024 samples looks the cleanest. However, it also takes the longest the render.
 
@@ -128,13 +128,13 @@ We can also compare how the number of samples per pixel affects the rendered ima
 
 The goal of adaptive sampling is to reduce noise by increasing the number of samples. However, not all the samples converge in a uniform manner, so we need to measure the level of convergence per pixel. We define a pixel's convergence as $$ I = 1.96 * \sigma / \sqrt{n} $$. This generates a 95% confidence interval that the average pixel illumination is within I of the mean. This allows us to terminate some integrations early since some pixels have a lower variance and have already converged. We can have a fixed sample size and trace rays faster because of this. Alternatively, we can increase the number of samples to decrease noise when rendering while still completing this task in a reasonable amount of time. In our sampling loop, we keep a running sum of the illuminance, a running sum of square illuminance, and the actual number of samples collected thus far. Every `samplesPerBatch`, we check to see if $$ I \le m * \mu $$, where $m$ is the maximum tolerance. If this is the case, then we stop our ray sampling loop. Afterwareds, we update `sampleCountBuffer` with the actual number of samples we collected, and we update our accumulated radiance with this value as well.
 
-Here is the result of using adaptive sampling on the bunny with a Russian Roulette termination probablity of 40%.
+Here is the result of using adaptive sampling on the bunny with a Russian Roulette termination probablity of 40% and 2048 light rays.
 
 | Adaptive sampling | Rate |
 | :----: | :----: |
 | <img src="media/part5/bunny_as.png"/> | <img src="media/part5/bunny_as_rate.png"/> |
 
-However, we noticed better results when using a lower termination probability. Below are the results of using adaptive sampling with a Russian Roulette termination probablity of 5%.
+However, we noticed better results when using a lower termination probability. Below are the results of using adaptive sampling with a Russian Roulette termination probablity of 5% and 2048 light rays.
 
 | Adaptive sampling | Rate |
 | :----: | :----: |
