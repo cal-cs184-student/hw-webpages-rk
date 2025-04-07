@@ -13,7 +13,7 @@
 # CS184/284A Spring 2025 Homework 4 Write-Up
 ## by Ramya Chitturi and Kerrine Tai
 
-Link to webpage: <a href="https://cal-cs184-student.github.io/hw-webpages-rk/index.html">https://cal-cs184-student.github.io/hw-webpages-rk/hw4/index.html</a>
+Link to webpage: <a href="https://cal-cs184-student.github.io/hw-webpages-rk/hw4/index.html">https://cal-cs184-student.github.io/hw-webpages-rk/hw4/index.html</a>
 
 Link to GitHub repository: <a href="https://github.com/cal-cs184-student/sp25-hw4-r-k-4">https://github.com/cal-cs184-student/sp25-hw4-r-k-4</a>
 
@@ -27,14 +27,22 @@ In this homework, we explored real time simulation of cloth through different te
 
 Screenshots of scene/pinned2.json! Cloth wireframe.
 
-<img src="media/part1/pinned2_1.png" width="300px"/>
-<img src="media/part1/pinned2_2.png" width="300px"/>
+<img src="media/part1/pinned2_1.png" width="500px"/>
+<img src="media/part1/pinned2_2.png" width="500px"/>
  
 Wireframe with different constraints. 
 
-| without any shearing constraints | with only shearing constraints | with all constraints |
-| :----: | :----: | :----: |
-| <img src="media/part1/no_shearing.png" width="500px"/> | <img src="media/part1/only_shearing.png" width="500px"/> | <img src="media/part1/all_constraints.png" width="500px"/> |
+Without any shearing constraints
+
+<img src="media/part1/no_shearing.png" width="500px"/>
+
+With only shearing constraints
+
+<img src="media/part1/only_shearing.png" width="500px"/>
+
+With all constraints
+
+<img src="media/part1/all_constraints.png" width="500px"/>
 
 ## Part 2: Simulation via numerical integration
 
@@ -48,7 +56,7 @@ Changing the ks, or spring constant, changes how stiff or flowy the fabric is. I
 | :----: | :----: |
 | <img src="media/part2/density_1.png" width="500px"/> | <img src="media/part2/density_100.png" width="500px"/> |
 
-The density changes the cloth's weight in this simmulation. When the density = 1 (low density), the cloth falls gently, and it does not sag as much. On the other hand, when density = 100, the cloth drapes faster and sags down much further. The fall for the heavier density is also somewhat bouncy. 
+The density changes the cloth's weight in this simulation. When the density = 1 (low density), the cloth falls gently, and it does not sag as much. On the other hand, when density = 100, the cloth drapes faster and sags down much further. The fall for the heavier density is also somewhat bouncy. 
 
 | damping low | damping high |
 | :----: | :----: |
@@ -72,7 +80,8 @@ For collision with planes, the process is similar to spheres. However, instead o
 
 As described in part 1, changing the ks value changes the stiffness or flowiness of the cloth. With a low ks value of 500, the cloth is very flowy and is able to fall on the sphere and show the shape of the sphere more clearly. In ks = 50000, the sphere is stiff and is not able to wrap around the ball tightly. In ks = 5000 image, the spring constant is between the values in the other image, and the cloth is also reflected as such. The cloth is able to wrap around the ball better than when ks = 50000, but the shape is not as clear as when ks = 500. 
 
-Cloth lying peacefully at rest
+Cloth lying peacefully at rest  
+
 <img src="media/part3/plane_original.png" width="500px"/>
 
 ## Part 4: Handling self-collisions
@@ -100,48 +109,56 @@ If we increase the density of the cloth, it appears a lot heavier and weighs its
 
 ## Part 5: Cloth Sim
 
-In a shader rpogram, we take in arguments with information about objects in the scene. For example, we have information about the position, lighting, and more. We then output a 4D vector for 1 coordinate in an image. The vertex shaders use transforms to change the appearance and position vectors. This occurs before rasterization. During rasterization, the fragment shaders fill in the spaces between the vertices and compute a color that we store in `out_color`.
+In a shader program, we take in arguments with information about objects in the scene. For example, we have information about the position, lighting, and more. We then output a 4D vector for 1 coordinate in an image. The vertex shaders use transforms to change the appearance and position vectors. This occurs before rasterization. During rasterization, the fragment shaders fill in the spaces between the vertices and compute a color that we store in `out_color`.
 
 ### Blinn Phong
 
 In Blinn-Phong, we combine 3 types of lighting and generate the lighting effect based on the properties of the material. Ambient lighting is constant throughout the scene. Diffuse lighting is matte, and its intensity depends on distance from the light. Specular lighting is dependent on the angle of the light relative to the object, as well as creating more visible reflections with a nearer light angle. 
 
-Only ambient
+Only ambient  
+
 <img src="media/part5/phong_ambient.png" width="500px"/>
 
-Only diffuse
+Only diffuse  
+
 <img src="media/part5/phong_diffuse.png" width="500px"/>
 
-Only specular
+Only specular  
+
 <img src="media/part5/phong_specular.png" width="500px"/>
 
-Full Blinn-Phong model
+Full Blinn-Phong model 
+
 <img src="media/part5/phong.png" width="500px"/>
 
 ### Custom Texture
 
 Now, here are a few screenshots of our custom texture - meet Potato!
 
-<img src="media/part5/texture_potato1.png" width="500px"/>
-<img src="media/part5/texture_potato2.png" width="500px"/>
-<img src="media/part5/texture_potato3.png" width="500px"/>
+<img src="media/part5/texture_potato1.png" width="500px"/>  
+<img src="media/part5/texture_potato2.png" width="500px"/>  
+<img src="media/part5/texture_potato3.png" width="500px"/>  
 
 ### Bump & Displacement Mapping
 
 We use the gingham texture_4 for our bump and displacement mappings. In bump mapping, we improve the texture by changing the surface normals (how the light source is reflected off the surface). In displacement mapping, we change the positions of the vertices themselves. Thus, it shows the texture a bit more because we are actually moving the vertices around. We also see the presence of shadows due to the texture.
 
-Bump Mapping
+Bump Mapping  
+
 <img src="media/part5/bump_texture4.png" width="500px"/>
 
-Displacement Mapping
+Displacement Mapping  
+
 <img src="media/part5/displacement_texture4.png" width="500px"/>
 
 Here are the shaders with `-o 16 -a 16`.
+
 | bump | displacement |
 | :----: | :----: |
 | <img src="media/part5/bump_texture4_oa16.png" width="500px"/> | <img src="media/part5/displacement_texture4_oa16.png" width="500px"/> |
 
 Here are the shaders with `-o 128 -a 128`.
+
 | bump | displacement |
 | :----: | :----: |
 | <img src="media/part5/bump_texture4_oa128.png" width="500px"/> | <img src="media/part5/displacement_texture4_oa128.png" width="500px"/> |
